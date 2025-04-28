@@ -31,7 +31,6 @@ use core_reportbuilder\external\system_report_exporter;
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once("{$CFG->libdir}/adminlib.php");
 
-
 $courseid = optional_param('courseid', 1, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 $categoryid = optional_param('categoryid', 0, PARAM_INT);
@@ -49,7 +48,7 @@ if ($courseid == 1) {
         $classname = payments_user::class;
     } else {
         $context = \context_system::instance();
-        $params = ['courseid' => $courseid];
+        $params = [];
         $classname = payments_global::class;
     }
 } else {
@@ -57,9 +56,9 @@ if ($courseid == 1) {
     $params = ['courseid' => $courseid];
     $classname = payments_course::class;
 }
+$url = new \moodle_url('/report/payments/index.php', $params);
 require_login();
-
-$PAGE->set_url(new \moodle_url('/report/payments/index.php', $params));
+$PAGE->set_url($url);
 $PAGE->set_pagelayout('report');
 $PAGE->set_context($context);
 $strheading = get_string('payments');
@@ -73,10 +72,11 @@ switch ($context->contextlevel) {
         $course = get_course($courseid);
         $PAGE->set_heading($course->fullname);
         $PAGE->set_course($course);
-        break;
+    break;
     default:
         $PAGE->set_heading($strheading);
 }
+navigation_node::override_active_url($url, true);
 \report_payments\event\report_viewed::create(['context' => $context])->trigger();
 $report = system_report_factory::create($classname, $context);
 
