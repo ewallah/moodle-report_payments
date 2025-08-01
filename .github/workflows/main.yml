@@ -135,11 +135,11 @@ jobs:
         run: moodle-plugin-ci --ansi behat  --suite="classic" --profile chrome
 
       - name: admin bookmarks
-        if: github.ref == 'refs/heads/main'
+        if: matrix.moodle-branch == 'main'
         run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome public/blocks/admin_bookmarks
         working-directory: moodle
 
       - name: admin xmldb
-        if: github.ref == 'refs/heads/main'
+        if: matrix.moodle-branch == 'main'
         run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome public/admin/tool/xmldb
         working-directory: moodle
