@@ -7,12 +7,22 @@ jobs:
     name: ci
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: 'postgres'
+          POSTGRES_HOST_AUTH_METHOD: 'trust'
+        options: --health-cmd="pg_isready" --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5432:5432
+
     strategy:
       fail-fast: false
       matrix:
         moodle-branch: ['main']
         php: ['8.3']
-        database: ['mysqli']
+        database: ['pgsql']
 
     steps:
       - name: checkout plugin
@@ -52,5 +62,5 @@ jobs:
 
       - name: infection
         if: ${{ !cancelled() }}
-        run: infection -s --configuration=report/payments/.infection.json5
+        run: infection -s --configuration=public/report/payments/.infection.json5
         working-directory: moodle
