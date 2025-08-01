@@ -24,6 +24,9 @@
  */
 namespace report_payments\reportbuilder;
 
+use context_course;
+use context_system;
+use context_user;
 use core_reportbuilder_generator;
 use core_reportbuilder_testcase;
 use core_reportbuilder\system_report_factory;
@@ -47,49 +50,58 @@ require_once("{$CFG->dirroot}/reportbuilder/tests/helpers.php");
  */
 final class report_test extends core_reportbuilder_testcase {
 
+    /** @var stdClass Course. */
+    private $course;
+
+    /** @var int User. */
+    private $userid;
     /**
      * Setup testcase.
      */
     public function setUp(): void {
-        global $DB;
+        global $DB, $CFG;
         parent::setUp();
+        require_once("{$CFG->dirroot}/reportbuilder/tests/fixtures/system_report_available.php");
         $this->setAdminUser();
         $this->resetAfterTest();
         $gen = $this->getDataGenerator();
         $pgen = $gen->get_plugin_generator('core_payment');
-        $course = $gen->create_course();
+        $this->course = $gen->create_course();
         $userid = $gen->create_user()->id;
+        $this->userid = $gen->create_user()->id;
         $feeplugin = enrol_get_plugin('fee');
         $account = $pgen->create_payment_account(['gateways' => 'paypal']);
         $accountid = $account->get('id');
         $data = [
-            'courseid' => $course->id,
+            'courseid' => $this->course->id,
             'customint1' => $accountid,
             'cost' => 250,
             'currency' => 'USD',
             'roleid' => 5,
         ];
-        $id = $feeplugin->add_instance($course, $data);
-        $paymentid = $pgen->create_payment(['accountid' => $accountid, 'amount' => 10, 'userid' => $userid]);
+        $id = $feeplugin->add_instance($this->course, $data);
+        $paymentid = $pgen->create_payment(['accountid' => $accountid, 'amount' => 20, 'userid' => $userid]);
         service_provider::deliver_order('fee', $id, $paymentid, $userid);
+        $DB->set_field('user', 'deleted', true, ['id' => $userid]);
+        $paymentid = $pgen->create_payment(['accountid' => $accountid, 'amount' => 10, 'userid' => $this->userid]);
+        service_provider::deliver_order('fee', $id, $paymentid, $this->userid);
         $records = $DB->get_records('payments', []);
         foreach ($records as $record) {
             $DB->set_field('payments', 'paymentarea', 'fee', ['id' => $record->id]);
         }
-
     }
 
     /**
-     * Test for report content
+     * Test for report content global
      *
      * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_global)]
      * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      * @return void
      */
-    public function test_content(): void {
+    public function test_content_global(): void {
         /** @var \core_reportbuilder_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_reportbuilder');
-        $context = \context_system::instance();
+        $context = context_system::instance();
         $generator->create_report([
             'name' => 'Payments global',
             'source' => payments_global::class,
@@ -98,5 +110,59 @@ final class report_test extends core_reportbuilder_testcase {
             'contextid' => $context->id,
             'component' => 'report_payments',
         ]);
+
+        $report = system_report_factory::create(payments_global::class, $context);
+        $this->assertEquals($report->get_initial_sort_column()->get_name(), 'gateway');
+        $columns = $report->get_active_columns();
+        $this->assertCount(7, $columns);
+        $this->assertCount(7, $report->get_active_filters());
+        $this->assertCount(7, $report->get_filters());
+        $this->assertCount(0, $report->get_active_conditions());
+        $this->assertEquals(0, $report->get_applied_filter_count());
+
+        $report->set_initial_sort_column('payment:accountid', SORT_DESC);
+        $this->assertEquals($report->get_initial_sort_column(), $columns['payment:accountid']);
+    }
+
+
+    /**
+     * Test for report content user
+     *
+     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_user)]
+     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
+     * @return void
+     */
+    public function test_content_user(): void {
+        $report = system_report_factory::create(payments_user::class, context_user::instance($this->userid));
+        $this->assertEquals($report->get_initial_sort_column()->get_name(), 'timecreated');
+        $columns = $report->get_active_columns();
+        $this->assertCount(5, $columns);
+        $this->assertCount(0, $report->get_active_filters());
+        $this->assertCount(0, $report->get_filters());
+        $this->assertCount(0, $report->get_active_conditions());
+        $this->assertEquals(0, $report->get_applied_filter_count());
+
+        $report->set_initial_sort_column('payment:currency', SORT_DESC);
+        $this->assertEquals($report->get_initial_sort_column(), $columns['payment:currency']);
+    }
+
+    /**
+     * Test for report content course
+     *
+     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_course)]
+     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
+     * @return void
+     */
+    public function test_content_course(): void {
+        $context = context_course::instance($this->course->id);
+        $report = system_report_factory::create(payments_user::class, $context);
+        $columns = $report->get_active_columns();
+        $this->assertEquals($report->get_initial_sort_column(), $columns['timecreated']);
+        $report->set_initial_sort_column('payment:currency', SORT_DESC);
+        $this->assertEquals($report->get_initial_sort_column(), $columns['payment:currency']);
+        $this->assertCount(5, $columns);
+        $this->assertCount(0, $report->get_active_conditions());
+        $this->assertCount(0, $report->get_active_filters());
+
     }
 }
