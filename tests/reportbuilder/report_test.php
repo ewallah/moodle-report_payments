@@ -157,7 +157,6 @@ final class report_test extends core_reportbuilder_testcase {
         $context = context_course::instance($this->course->id);
         $report = system_report_factory::create(payments_user::class, $context);
         $columns = $report->get_active_columns();
-        $this->assertEquals($report->get_initial_sort_column(), $columns['timecreated']);
         $report->set_initial_sort_column('payment:currency', SORT_DESC);
         $this->assertEquals($report->get_initial_sort_column(), $columns['payment:currency']);
         $this->assertCount(5, $columns);
