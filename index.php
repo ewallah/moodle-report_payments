@@ -72,7 +72,7 @@ switch ($context->contextlevel) {
         $course = get_course($courseid);
         $PAGE->set_heading($course->fullname);
         $PAGE->set_course($course);
-    break;
+        break;
     default:
         $PAGE->set_heading($strheading);
 }

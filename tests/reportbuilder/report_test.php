@@ -49,7 +49,6 @@ require_once("{$CFG->dirroot}/reportbuilder/tests/helpers.php");
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class report_test extends core_reportbuilder_testcase {
-
     /** @var stdClass Course. */
     private $course;
 
@@ -162,6 +161,5 @@ final class report_test extends core_reportbuilder_testcase {
         $this->assertCount(5, $columns);
         $this->assertCount(0, $report->get_active_conditions());
         $this->assertCount(0, $report->get_active_filters());
-
     }
 }

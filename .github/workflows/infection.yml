@@ -60,6 +60,5 @@ jobs:
            echo 'require("autoload.php");' >> vendor/autoloadmoodle.php
 
       - name: infection
-        if: ${{ !cancelled() }}
         run: infection -s --configuration=public/report/payments/.infection.json5
         working-directory: moodle
