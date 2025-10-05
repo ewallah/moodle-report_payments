@@ -25,9 +25,8 @@ Feature: Payment reportbuilder feature
       | Report source         | Payments  |
       | Include default setup | 1         |
     And I click on "Save" "button" in the "New report" "dialogue"
-    Then I should see "My report"
     # Confirm we see the default columns in the report.
-    And I should see "Full name" in the "reportbuilder-table" "table"
+    Then I should see "Full name" in the "reportbuilder-table" "table"
     And I should see "Cost" in the "reportbuilder-table" "table"
     And I should not see "Course" in the "reportbuilder-table" "table"
     And I click on "Close 'My report' editor" "button"
