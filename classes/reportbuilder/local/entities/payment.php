@@ -41,15 +41,6 @@ use lang_string;
  */
 class payment extends base {
     /**
-     * Database tables that this entity uses and their default aliases
-     *
-     * @return array
-     */
-    protected function get_default_table_aliases(): array {
-        return ['payments' => 'pa'];
-    }
-
-    /**
      * The default title for this entity in the list of columns/conditions/filters in the report builder
      *
      * @return lang_string

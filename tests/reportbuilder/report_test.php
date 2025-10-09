@@ -33,6 +33,7 @@ use core_reportbuilder\system_report_factory;
 use enrol_fee\payment\service_provider;
 use report_payments\reportbuilder\datasource\payments;
 use report_payments\reportbuilder\local\systemreports\{payments_course, payments_global, payments_user};
+use PHPUnit\Framework\Attributes\CoversClass;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -48,6 +49,10 @@ require_once("{$CFG->dirroot}/reportbuilder/tests/helpers.php");
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(local\entities\payment::class)]
+#[CoversClass(local\systemreports\payments_global::class)]
+#[CoversClass(local\systemreports\payments_user::class)]
+#[CoversClass(local\systemreports\payments_course::class)]
 final class report_test extends core_reportbuilder_testcase {
     /** @var stdClass Course. */
     private $course;
@@ -93,8 +98,6 @@ final class report_test extends core_reportbuilder_testcase {
     /**
      * Test for report content global
      *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_global)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      * @return void
      */
     public function test_content_global(): void {
@@ -127,8 +130,6 @@ final class report_test extends core_reportbuilder_testcase {
     /**
      * Test for report content user
      *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_user)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      * @return void
      */
     public function test_content_user(): void {
@@ -148,8 +149,6 @@ final class report_test extends core_reportbuilder_testcase {
     /**
      * Test for report content course
      *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_course)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      * @return void
      */
     public function test_content_course(): void {

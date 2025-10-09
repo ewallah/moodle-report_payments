@@ -32,7 +32,7 @@ use core_reportbuilder\system_report_factory;
 use enrol_fee\payment\service_provider;
 use report_payments\reportbuilder\datasource\payments;
 use report_payments\reportbuilder\local\systemreports\{payments_course, payments_global, payments_user};
-
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Class report payments global report tests
@@ -42,6 +42,11 @@ use report_payments\reportbuilder\local\systemreports\{payments_course, payments
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(local\systemreports\payments_global::class)]
+#[CoversClass(local\systemreports\payments_course::class)]
+#[CoversClass(local\systemreports\payments_user::class)]
+#[CoversClass(local\entities\payment::class)]
+#[CoversClass(datasource\payments::class)]
 final class reports_test extends \advanced_testcase {
     /** @var stdClass Course. */
     private $course;
@@ -93,9 +98,6 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the global report.
-     *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_global)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      */
     public function test_global(): void {
         global $PAGE;
@@ -112,9 +114,6 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the course report.
-     *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_course)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      */
     public function test_course(): void {
         global $PAGE;
@@ -127,9 +126,6 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the course report.
-     *
-     * #[CoversClass(report_payments\reportbuilder\local\systemreports\payments_user)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      */
     public function test_user(): void {
         global $PAGE;
@@ -144,7 +140,6 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the output.
-     *
      * @param string $out
      */
     private function output_assert(string $out): void {
@@ -158,9 +153,6 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the datasource.
-     *
-     * #[CoversClass(report_payments\reportbuilder\datasource\payments)]
-     * #[CoversClass(report_payments\reportbuilder\local\entities\payment)]
      */
     public function test_datasource(): void {
         $gen = self::getDataGenerator()->get_plugin_generator('core_reportbuilder');
