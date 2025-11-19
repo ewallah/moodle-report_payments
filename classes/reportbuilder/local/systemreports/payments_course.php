@@ -72,15 +72,14 @@ class payments_course extends system_report {
         $this->add_columns();
         $this->add_filters();
         if ($context->instanceid > 0) {
-            $this->add_base_condition_sql("$coursealias.id = :$param", [$param => $context->instanceid]);
+            $this->add_base_condition_sql("{$coursealias}.id = :{$param}", [$param => $context->instanceid]);
         }
+
         $this->set_downloadable(true, get_string('payments'));
     }
 
     /**
      * Validates access to view this report
-     *
-     * @return bool
      */
     protected function can_view(): bool {
         return has_capability('report/payments:view', $this->get_context());
@@ -88,8 +87,6 @@ class payments_course extends system_report {
 
     /**
      * Get the visible name of the report
-     *
-     * @return string
      */
     public static function get_name(): string {
         return get_string('payments');
@@ -112,6 +109,7 @@ class payments_course extends system_report {
         if ($column = $this->get_column('payment:accountid')) {
             $column->set_title(new \lang_string('accountname', 'payment'));
         }
+
         $this->set_initial_sort_column('payment:timecreated', SORT_DESC);
     }
 

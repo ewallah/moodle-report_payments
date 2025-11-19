@@ -77,8 +77,6 @@ class payments_user extends system_report {
 
     /**
      * Validates access to view this report
-     *
-     * @return bool
      */
     protected function can_view(): bool {
         return has_capability('report/payments:view', $this->get_context());
@@ -86,8 +84,6 @@ class payments_user extends system_report {
 
     /**
      * Get the visible name of the report
-     *
-     * @return string
      */
     public static function get_name(): string {
         return get_string('payments');
@@ -109,6 +105,7 @@ class payments_user extends system_report {
         if ($column = $this->get_column('course:coursefullnamewithlink')) {
             $column->set_title(new \lang_string('course'));
         }
+
         $this->set_initial_sort_column('payment:timecreated', SORT_DESC);
     }
 }

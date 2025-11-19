@@ -30,7 +30,7 @@
  * @param stdClass $course The course to object for the report
  * @param stdClass $context The context of the course
  */
-function report_payments_extend_navigation_course($navigation, $course, $context) {
+function report_payments_extend_navigation_course($navigation, $course, $context): void {
     if (has_capability('report/payments:view', $context)) {
         $url = new moodle_url('/report/payments/index.php', ['courseid' => $course->id]);
         $txt = get_string('payments');
@@ -45,7 +45,7 @@ function report_payments_extend_navigation_course($navigation, $course, $context
  * @param context $context The context of the coursecategory
  * @return void|null return null if we don't want to display the node.
  */
-function report_payments_extend_navigation_category_settings($navigation, $context) {
+function report_payments_extend_navigation_category_settings($navigation, $context): void {
     if (has_capability('report/payments:overview', $context)) {
         $url = new moodle_url('/report/payments/index.php', ['categoryid' => $context->instanceid]);
         $txt = get_string('payments');
@@ -61,13 +61,12 @@ function report_payments_extend_navigation_category_settings($navigation, $conte
  * @param stdClass $user user object
  * @param bool $iscurrentuser
  * @param stdClass $course Course object
- *
- * @return bool
  */
-function report_payments_myprofile_navigation(\core_user\output\myprofile\tree $tree, $user, $iscurrentuser, $course) {
+function report_payments_myprofile_navigation(\core_user\output\myprofile\tree $tree, $user, $iscurrentuser, $course): bool {
     if (isguestuser($user) || !isloggedin()) {
         return false;
     }
+
     $context = \context_user::instance($user->id);
     if (has_capability('report/payments:userview', $context)) {
         $url = new moodle_url('/report/payments/index.php', ['userid' => $user->id]);
@@ -75,6 +74,7 @@ function report_payments_myprofile_navigation(\core_user\output\myprofile\tree $
         $node = new \core_user\output\myprofile\node('reports', 'payments', $txt, null, $url);
         $tree->add_node($node);
     }
+
     return true;
 }
 
@@ -83,9 +83,8 @@ function report_payments_myprofile_navigation(\core_user\output\myprofile\tree $
  * @param string $pagetype current page type
  * @param stdClass $parentcontext Block's parent context
  * @param stdClass $currentcontext Current context of block
- * @return array
  */
-function report_payments_page_type_list($pagetype, $parentcontext, $currentcontext) {
+function report_payments_page_type_list($pagetype, $parentcontext, $currentcontext): array {
     return [
         '*' => new \lang_string('page-x', 'pagetype'),
         'report-*' => new \lang_string('page-report-x', 'pagetype'),

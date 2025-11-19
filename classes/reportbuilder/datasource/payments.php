@@ -89,8 +89,6 @@ class payments extends datasource {
 
     /**
      * Get the visible name of the report.
-     *
-     * @return string
      */
     public static function get_name(): string {
         return get_string('payments');

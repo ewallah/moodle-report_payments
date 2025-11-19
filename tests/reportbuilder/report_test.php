@@ -59,6 +59,7 @@ final class report_test extends core_reportbuilder_testcase {
 
     /** @var int User. */
     private $userid;
+
     /**
      * Setup testcase.
      */
@@ -73,6 +74,7 @@ final class report_test extends core_reportbuilder_testcase {
         $this->course = $gen->create_course();
         $userid = $gen->create_user()->id;
         $this->userid = $gen->create_user()->id;
+
         $feeplugin = enrol_get_plugin('fee');
         $account = $pgen->create_payment_account(['gateways' => 'paypal']);
         $accountid = $account->get('id');
@@ -97,8 +99,6 @@ final class report_test extends core_reportbuilder_testcase {
 
     /**
      * Test for report content global
-     *
-     * @return void
      */
     public function test_content_global(): void {
         /** @var \core_reportbuilder_generator $generator */
@@ -129,8 +129,6 @@ final class report_test extends core_reportbuilder_testcase {
 
     /**
      * Test for report content user
-     *
-     * @return void
      */
     public function test_content_user(): void {
         $report = system_report_factory::create(payments_user::class, context_user::instance($this->userid));
@@ -148,8 +146,6 @@ final class report_test extends core_reportbuilder_testcase {
 
     /**
      * Test for report content course
-     *
-     * @return void
      */
     public function test_content_course(): void {
         $context = context_course::instance($this->course->id);

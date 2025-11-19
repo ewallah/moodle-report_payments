@@ -42,8 +42,6 @@ use lang_string;
 class payment extends base {
     /**
      * The default title for this entity in the list of columns/conditions/filters in the report builder
-     *
-     * @return lang_string
      */
     protected function get_default_entity_title(): lang_string {
         return new lang_string('payments');
@@ -51,8 +49,6 @@ class payment extends base {
 
     /**
      * Initialise the entity
-     *
-     * @return base
      */
     public function initialise(): base {
         $columns = $this->get_all_columns();
@@ -117,9 +113,7 @@ class payment extends base {
             ->set_type(column::TYPE_TEXT)
             ->add_field("{$tablealias}.amount")
             ->set_is_sortable(true)
-            ->add_callback(function (?string $value): string {
-                return ($value === '') ? '0' : number_format(floatval($value), 2);
-            });
+            ->add_callback(fn(?string $value): string => ($value === '') ? '0' : number_format(floatval($value), 2));
 
         // Currency column.
         $columns[] = (new column('currency', new lang_string('currency'), $name))

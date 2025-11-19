@@ -41,10 +41,10 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class behat_report_payments extends behat_base {
     /**
      * Pay for a course
-     * @Then /^I pay for course "(?P<course>[^"]*)"$/
      * @param string $course
      */
-    public function i_pay_for_course($course) {
+    #[\Behat\Step\Then('/^I pay for course "(?P<course>[^"]*)"$/')]
+    public function i_pay_for_course($course): void {
         global $DB;
         $courseid = $this->get_course_id($course);
         $context = \context_course::instance($courseid);
@@ -56,6 +56,7 @@ class behat_report_payments extends behat_base {
         $record->enrolid = $enrol->id;
         $record->status = 0;
         $record->timestart = time();
+
         $DB->insert_record('user_enrolments', $record);
 
         $account = $DB->get_record('payment_accounts', ['id' => $enrol->customint1]);
@@ -68,7 +69,9 @@ class behat_report_payments extends behat_base {
         $record->currency = $enrol->currency;
         $record->gateway = 'paypal';
         $record->accountid = $account->id;
-        $record->timecreated = $record->timemodified = time();
+        $record->timecreated = time();
+        $record->timemodified = $record->timecreated;
+
         $DB->insert_record('payments', $record);
     }
 }

@@ -28,7 +28,7 @@ use report_payments\reportbuilder\local\systemreports\{payments_course, payments
 use core_reportbuilder\system_report_factory;
 use core_reportbuilder\external\system_report_exporter;
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(__DIR__ . '/../../config.php');
 require_once("{$CFG->libdir}/adminlib.php");
 
 $courseid = optional_param('courseid', 1, PARAM_INT);
@@ -56,6 +56,7 @@ if ($courseid == 1) {
     $params = ['courseid' => $courseid];
     $classname = payments_course::class;
 }
+
 $url = new \moodle_url('/report/payments/index.php', $params);
 require_login();
 $PAGE->set_url($url);
@@ -76,6 +77,7 @@ switch ($context->contextlevel) {
     default:
         $PAGE->set_heading($strheading);
 }
+
 navigation_node::override_active_url($url, true);
 \report_payments\event\report_viewed::create(['context' => $context])->trigger();
 $report = system_report_factory::create($classname, $context);
@@ -83,6 +85,7 @@ $report = system_report_factory::create($classname, $context);
 if (!empty($filter)) {
     $report->set_filter_values(['payment:name_values' => $filter]);
 }
+
 echo $OUTPUT->header();
 $pluginname = get_string('pluginname', 'report_payments');
 report_helper::print_report_selector($pluginname);

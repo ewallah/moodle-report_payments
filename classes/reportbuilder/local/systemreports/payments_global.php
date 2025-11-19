@@ -82,7 +82,7 @@ class payments_global extends system_report {
             // TODO: get_in_or_equal CANNOT be used (mixed params).
             $courseids = $coursecat->get_courses(['recursive' => true, 'idonly' => true]);
             $str = implode(',', $courseids);
-            $this->add_base_condition_sql("$coursealias.id IN ($str)", []);
+            $this->add_base_condition_sql("{$coursealias}.id IN ({$str})", []);
         }
 
         $this->set_downloadable(true, get_string('payments'));
@@ -90,8 +90,6 @@ class payments_global extends system_report {
 
     /**
      * Validates access to view this report
-     *
-     * @return bool
      */
     protected function can_view(): bool {
         return has_capability('report/payments:overview', $this->get_context());
@@ -99,8 +97,6 @@ class payments_global extends system_report {
 
     /**
      * Get the visible name of the report
-     *
-     * @return string
      */
     public static function get_name(): string {
         return get_string('payments');
@@ -122,9 +118,11 @@ class payments_global extends system_report {
         if ($column = $this->get_column('course:coursefullnamewithlink')) {
             $column->set_title(new \lang_string('course'));
         }
+
         if ($column = $this->get_column('payment:accountid')) {
             $column->set_title(new \lang_string('accountname', 'payment'));
         }
+
         $this->set_initial_sort_column('payment:gateway', SORT_DESC);
     }
 

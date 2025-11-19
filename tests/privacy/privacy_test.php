@@ -42,9 +42,7 @@ final class privacy_test extends provider_testcase {
      */
     public function test_get_metadata(): void {
         $str = 'report_payments';
-        $this->resetAfterTest(true);
-        $collection = new \core_privacy\local\metadata\collection($str);
-        $reason = provider::get_reason($collection);
+        $reason = provider::get_reason();
         $this->assertEquals($reason, 'privacy:metadata');
         $this->assertStringContainsString('plugin does not store any personal data', get_string($reason, $str));
     }

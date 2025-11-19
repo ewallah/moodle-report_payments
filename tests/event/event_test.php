@@ -74,6 +74,7 @@ final class event_test extends \advanced_testcase {
         $context = \context_coursecat::instance($course->category);
         $event = \report_payments\event\report_viewed::create(['context' => $context]);
         $event->trigger();
+
         $events = $sink->get_events();
         $event = end($events);
         $this->assertInstanceOf('\report_payments\event\report_viewed', $event);
@@ -86,6 +87,7 @@ final class event_test extends \advanced_testcase {
         $context = \context_system::instance();
         $event = \report_payments\event\report_viewed::create(['context' => $context]);
         $event->trigger();
+
         $events = $sink->get_events();
         $event = end($events);
         $this->assertInstanceOf('\report_payments\event\report_viewed', $event);
@@ -98,6 +100,7 @@ final class event_test extends \advanced_testcase {
         $context = \context_user::instance($user->id);
         $event = \report_payments\event\report_viewed::create(['context' => $context, 'relateduserid' => $user->id]);
         $event->trigger();
+
         $events = $sink->get_events();
         $event = end($events);
         $this->assertInstanceOf('\report_payments\event\report_viewed', $event);
