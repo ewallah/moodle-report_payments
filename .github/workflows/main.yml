@@ -104,7 +104,7 @@ jobs:
         working-directory: moodle
 
       - name: coveralls
-        run: moodle-plugin-ci coveralls-upload || true
+        run: moodle-plugin-ci coveralls-upload
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
