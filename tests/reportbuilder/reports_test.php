@@ -141,6 +141,7 @@ final class reports_test extends \advanced_testcase {
 
     /**
      * Test the output.
+     * @param string $out Output
      */
     private function output_assert(string $out): void {
         $this->assertStringNotContainsString('Nothing to display', $out);
