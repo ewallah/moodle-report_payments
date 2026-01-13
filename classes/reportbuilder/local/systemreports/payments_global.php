@@ -77,9 +77,8 @@ class payments_global extends system_report {
 
         $this->add_columns();
         $this->add_filters();
-        if ($context->contextlevel == CONTEXT_COURSECAT) {
+        if ($context->contextlevel === CONTEXT_COURSECAT) {
             $coursecat = \core_course_category::get($context->instanceid);
-            // TODO: get_in_or_equal CANNOT be used (mixed params).
             $courseids = $coursecat->get_courses(['recursive' => true, 'idonly' => true]);
             $str = implode(',', $courseids);
             $this->add_base_condition_sql("{$coursealias}.id IN ({$str})", []);
@@ -105,7 +104,7 @@ class payments_global extends system_report {
     /**
      * Adds the columns we want to display in the report
      */
-    public function add_columns(): void {
+    private function add_columns(): void {
         $this->add_columns_from_entities([
             'payment:accountid',
             'course:coursefullnamewithlink',
@@ -129,7 +128,7 @@ class payments_global extends system_report {
     /**
      * Adds the filters we want to display in the report
      */
-    protected function add_filters(): void {
+    private function add_filters(): void {
         $this->add_filters_from_entities([
             'course:fullname',
             'user:fullname',

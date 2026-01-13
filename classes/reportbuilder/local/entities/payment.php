@@ -146,7 +146,7 @@ class payment extends base {
 
         $ownermethod = static function (): array {
             global $DB;
-            return $DB->get_records_menu('payment_accounts', ['enabled' => true]);
+            return $DB->get_records_menu('payment_accounts');
         };
 
         // Name filter.

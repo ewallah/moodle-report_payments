@@ -76,15 +76,12 @@ class payments extends datasource {
 
         $this->add_columns_from_entity($mainname);
         $this->add_filters_from_entity($mainname);
-        $this->add_conditions_from_entity($mainname);
 
         $this->add_columns_from_entity($username);
         $this->add_filters_from_entity($username);
-        $this->add_conditions_from_entity($username);
 
         $this->add_columns_from_entity($coursename);
         $this->add_filters_from_entity($coursename);
-        $this->add_conditions_from_entity($coursename);
     }
 
     /**

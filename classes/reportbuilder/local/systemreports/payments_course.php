@@ -71,9 +71,7 @@ class payments_course extends system_report {
 
         $this->add_columns();
         $this->add_filters();
-        if ($context->instanceid > 0) {
-            $this->add_base_condition_sql("{$coursealias}.id = :{$param}", [$param => $context->instanceid]);
-        }
+        $this->add_base_condition_sql("{$coursealias}.id = :{$param}", [$param => $context->instanceid]);
 
         $this->set_downloadable(true, get_string('payments'));
     }
@@ -95,7 +93,7 @@ class payments_course extends system_report {
     /**
      * Adds the columns we want to display in the report
      */
-    public function add_columns(): void {
+    private function add_columns(): void {
         $this->add_columns_from_entities(
             [
                 'payment:accountid',
@@ -116,7 +114,7 @@ class payments_course extends system_report {
     /**
      * Adds the filters we want to display in the report
      */
-    protected function add_filters(): void {
+    private function add_filters(): void {
         $this->add_filters_from_entities([
             'user:fullname',
             'payment:gateway',
