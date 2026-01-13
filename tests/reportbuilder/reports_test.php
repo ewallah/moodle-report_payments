@@ -161,5 +161,24 @@ final class reports_test extends \advanced_testcase {
         $this->assertEquals($report->get_formatted_name(), 'Pay');
         $preport = new payments($report);
         $this->assertEquals($preport->get_name(), 'Payments');
+        $arr = [
+            'payment:accountid',
+            'payment:gateway',
+            'user:fullnamewithlink',
+            'payment:amount',
+            'payment:currency',
+            'payment:timecreated',
+        ];
+        $this->assertEquals($preport->get_default_columns(), $arr);
+        $arr = [
+            'course:fullname',
+            'user:fullname',
+            'payment:gateway',
+            'payment:amount',
+            'payment:currency',
+            'payment:timecreated',
+        ];
+        $this->assertEquals($preport->get_default_filters(), $arr);
+        $this->assertEquals($preport->get_default_conditions(), []);
     }
 }
