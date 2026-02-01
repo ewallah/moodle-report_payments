@@ -1,3 +1,71 @@
+## Jan 13 2026
+
+* code review
+* additional tests
+* infection.0.32
+* CHANGES.md
+
+## Dec 23 2025
+
+* code review
+* rector
+
+## Oct 15 2025
+
+* tag: v5.2.2
+* version update
+
+## Oct 9 2025
+
+* tag: v5.2.1
+* Version update
+* code review
+
+## Oct 4 2025
+
+* MOODLE_501_STABLE
+
+## Aug 8 2025
+
+* review
+
+## Aug 1 2025
+
+* infection
+* additional tests
+* pgsql
+* get_initial_sort_column
+* only_covered
+
+## Apr 30 2025
+
+* tag: v5.1.1
+* Version update
+* navigation_node
+
+## Apr 21 2025
+
+* tag: v5.0.1
+* version_update
+* workflow
+
+## Apr 18 2025
+
+* MOODLE_405_STABLE
+
+## Apr 18 2025
+
+* CoversClass
+
+## Jan 31 2025
+
+* PHPUnit 11
+
+## Dec 12 2024
+
+* cron
+* code review
+
 ## Oct 15 2024
 
 * version update

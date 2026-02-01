@@ -56,7 +56,7 @@ detailed support.
 
 [![Build Status](https://github.com/iplusacademy/report_payments/actions/workflows/main.yml/badge.svg)](https://github.com/iplusacademy/report_payments/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/iplusacademy/report_payments/badge.svg?branch=main)](https://coveralls.io/github/iplusacademy/report_payments?branch=main)
-![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/60?color=orange)
+![Mutation score](https://badgen.net/badge/Mutation%20Score%20Indicator/92?color=orange)
 
 
 ## Todo
