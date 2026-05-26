@@ -5,6 +5,7 @@ Feature: Payment reportbuilder feature
     Given the following "users" exist:
       | username |
       | student1 |
+      | student2 |
       | teacher1 |
       | manager1 |
     And the following "core_payment > payment accounts" exist:
@@ -16,7 +17,7 @@ Feature: Payment reportbuilder feature
       | Dollar account | 10     | student1 |
 
   Scenario: Admins can generate a reportbuilder payments customreport
-    When I log in as "admin"
+    Given I log in as "admin"
     And I change window size to "large"
     When I navigate to "Reports > Report builder > Custom reports" in site administration
     And I click on "New report" "button"
@@ -35,7 +36,7 @@ Feature: Payment reportbuilder feature
       | My report | Payments      | Admin User  |
 
   Scenario: Admins can generate a reportbuilder payments customreport without default setup
-    When I log in as "admin"
+    Given I log in as "admin"
     And I change window size to "large"
     When I navigate to "Reports > Report builder > Custom reports" in site administration
     And I click on "New report" "button"
@@ -50,6 +51,30 @@ Feature: Payment reportbuilder feature
     And the following should exist in the "reportbuilder-table" table:
       | Name      | Report source | Modified by |
       | My report | Payments      | Admin User  |
+
+  Scenario: Admins can filter a reportbuilder payments customreport
+    Given I log in as "admin"
+    And the following "core_payment > payments" exist:
+      | account      | amount | user     |
+      | Euro account | 20     | student2 |
+    And I change window size to "large"
+    And I navigate to "Reports > Report builder > Custom reports" in site administration
+    And I click on "New report" "button"
+    And I set the following fields in the "New report" "dialogue" to these values:
+      | Name                  | My report |
+      | Report source         | Payments  |
+      | Include default setup | 1         |
+    And I click on "Save" "button" in the "New report" "dialogue"
+    And I should see "Full name" in the "reportbuilder-table" "table"
+    And I click on "Preview" "button"
+    When I click on "Filters" "button"
+    And I set the following fields in the "Cost" "core_reportbuilder > Filter" to these values:
+      | Cost operator | Is equal to |
+      | Cost value    | 20          |
+    And I click on "Apply" "button" in the "[data-region='report-filters']" "css_element"
+    Then I should see "Cost" in the "reportbuilder-table" "table"
+    And I should see "20" in the "reportbuilder-table" "table"
+    But I should not see "10" in the "reportbuilder-table" "table"
 
   Scenario Outline: Download payments report in different formats
     And the following "core_reportbuilder > Reports" exist:
