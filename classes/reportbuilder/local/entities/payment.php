@@ -91,21 +91,24 @@ class payment extends base {
             ->add_join("LEFT JOIN {payment_accounts} pac ON {$tablealias}.accountid = pac.id")
             ->set_type(column::TYPE_TEXT)
             ->add_field("pac.name")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->add_callback(fn($value) => s($value));
 
         // Component column.
         $columns[] = (new column('component', new lang_string('plugin'), $name))
             ->add_joins($this->get_joins())
             ->set_type(column::TYPE_TEXT)
             ->add_field("{$tablealias}.component")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->add_callback(fn($value) => s($value));
 
         // Gateway column.
         $columns[] = (new column('gateway', new lang_string('type_paygw', 'plugin'), $name))
             ->add_joins($this->get_joins())
             ->set_type(column::TYPE_TEXT)
             ->add_field("{$tablealias}.gateway")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->add_callback(fn($value) => s($value));
 
         // Amount column.
         $columns[] = (new column('amount', new lang_string('cost'), $name))
@@ -120,7 +123,8 @@ class payment extends base {
             ->add_joins($this->get_joins())
             ->set_type(column::TYPE_TEXT)
             ->add_field("{$tablealias}.currency")
-            ->set_is_sortable(true);
+            ->set_is_sortable(true)
+            ->add_callback(fn($value) => s($value));
 
         // Date column.
         $columns[] = (new column('timecreated', new lang_string('date'), $name))

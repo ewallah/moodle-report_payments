@@ -77,7 +77,7 @@ class payments_user extends system_report {
      * Validates access to view this report
      */
     protected function can_view(): bool {
-        return has_capability('report/payments:view', $this->get_context());
+        return has_capability('report/payments:userview', $this->get_context());
     }
 
     /**

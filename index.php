@@ -34,6 +34,7 @@ require_once("{$CFG->libdir}/adminlib.php");
 $courseid = optional_param('courseid', 1, PARAM_INT);
 $userid = optional_param('userid', 0, PARAM_INT);
 $categoryid = optional_param('categoryid', 0, PARAM_INT);
+$filter = optional_param('accountid', 0, PARAM_INT);
 require_login();
 
 if ($courseid == 1) {
