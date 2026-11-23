@@ -22,6 +22,7 @@
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace report_payments\reportbuilder;
 
 use context_course;
@@ -111,7 +112,7 @@ final class report_test extends core_reportbuilder_testcase {
         $report = $payment->initialise();
         $this->assertEquals('payment', $report->get_entity_name());
         $this->assertEquals(new \lang_string('payments'), $report->get_entity_title());
-        $this->assertEquals(['payments'], array_keys($report->get_table_aliases()));
+        $this->assertEquals(['payments', 'payment_accounts'], array_keys($report->get_table_aliases()));
         $this->assertFalse($report->has_table_join_alias('payment'));
 
         $columns = $report->get_columns();
@@ -176,7 +177,7 @@ final class report_test extends core_reportbuilder_testcase {
         $condition = $report->get_base_condition();
         $this->assertCount(2, $condition);
         $this->assertStringContainsString('deleted', $condition[0]);
-        $this->assertCount(1, $condition[1]);
+        $this->assertCount(2, $condition[1]);
 
         $fields = $report->get_base_fields();
         $this->assertCount(1, $fields);
@@ -216,7 +217,7 @@ final class report_test extends core_reportbuilder_testcase {
         $condition = $report->get_base_condition();
         $this->assertCount(2, $condition);
         $this->assertStringContainsString('deleted', $condition[0]);
-        $this->assertCount(1, $condition[1]);
+        $this->assertCount(2, $condition[1]);
     }
 
     /**

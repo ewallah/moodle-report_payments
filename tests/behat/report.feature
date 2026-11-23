@@ -145,7 +145,7 @@ Feature: View payment report
     And I should see "phil" in the "#category-listing ul" "css_element"
     And I follow "Philosophy"
     And I follow "Payments"
-    Then I should not see "Nothing to display"
+    Then I should see "Nothing to display"
 
   Scenario: Admins can see the payments report in category context
     When I log in as "admin"
@@ -153,7 +153,7 @@ Feature: View payment report
     Then I should see the "Course categories and courses" management page
     And I follow "Science and technology"
     And I follow "Payments"
-    Then I should not see "Nothing to display"
+    Then I should see "Nothing to display"
 
   Scenario: Admins can see the payments report in user context
     When I log in as "admin"

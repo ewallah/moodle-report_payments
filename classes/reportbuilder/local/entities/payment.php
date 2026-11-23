@@ -73,7 +73,7 @@ class payment extends base {
      * @return string[]
      */
     protected function get_default_tables(): array {
-        return ['payments'];
+        return ['payments', 'payment_accounts'];
     }
 
     /**
@@ -83,14 +83,15 @@ class payment extends base {
      */
     private function get_all_columns(): array {
         $tablealias = $this->get_table_alias('payments');
+        $accountalias = $this->get_table_alias('payment_accounts');
         $name = $this->get_entity_name();
 
         // Accountid column.
         $columns[] = (new column('accountid', new lang_string('name'), $name))
             ->add_joins($this->get_joins())
-            ->add_join("LEFT JOIN {payment_accounts} pac ON {$tablealias}.accountid = pac.id")
+            ->add_join("LEFT JOIN {payment_accounts} {$accountalias} ON {$tablealias}.accountid = {$accountalias}.id")
             ->set_type(column::TYPE_TEXT)
-            ->add_field("pac.name")
+            ->add_field("{$accountalias}.name")
             ->set_is_sortable(true)
             ->add_callback(fn($value) => s($value));
 
